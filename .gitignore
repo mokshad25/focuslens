@@ -1,0 +1,8 @@
+# FocusLens — never commit these
+.env
+data/
+*.db
+__pycache__/
+*.pyc
+.DS_Store
+.streamlit/secrets.toml
