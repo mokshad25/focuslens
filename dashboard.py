@@ -64,122 +64,360 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ── Custom CSS — dark, minimal, professional ──────────────────────────────────
+# ── Custom CSS — modern SaaS dashboard theme ──────────────────────────────────
 st.markdown("""
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-  /* Global */
-  html, body, [class*="css"] {
-    font-family: 'IBM Plex Sans', sans-serif;
-    background-color: #0D1117;
-    color: #E6EDF3;
+  :root {
+    --bg: #0f1014;
+    --surface: #16181d;
+    --surface-2: #1d2027;
+    --surface-3: #242833;
+    --border: #2b303b;
+    --border-soft: rgba(255,255,255,0.07);
+    --text: #f4f6f8;
+    --muted: #9aa3b2;
+    --muted-2: #6f7887;
+    --accent: #14b8a6;
+    --accent-soft: rgba(20,184,166,0.12);
+    --danger: #f87171;
+    --danger-soft: rgba(248,113,113,0.11);
+    --warning: #fbbf24;
+    --shadow: 0 18px 55px rgba(0,0,0,0.28);
+    --radius: 10px;
+  }
+
+  /* App shell */
+  html, body, [class*="css"], .stApp {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at top left, rgba(20,184,166,0.08), transparent 30%),
+                linear-gradient(180deg, #111216 0%, var(--bg) 42%, #0b0c0f 100%);
+    color: var(--text);
+  }
+  .stAppHeader,
+  header[data-testid="stHeader"] {
+    background: transparent;
+  }
+  #MainMenu,
+  footer,
+  [data-testid="stToolbar"],
+  [data-testid="stDecoration"] {
+    visibility: hidden;
+    height: 0;
+  }
+  .main .block-container {
+    max-width: 1420px;
+    padding: 2rem 2.4rem 4rem;
+  }
+  [data-testid="stVerticalBlock"] {
+    gap: 1rem;
+  }
+  [data-testid="stHorizontalBlock"] {
+    gap: 1rem;
+    align-items: stretch;
+  }
+  hr {
+    border: none;
+    height: 1px;
+    background: var(--border-soft);
+    margin: 1.4rem 0;
   }
 
   /* Sidebar */
   [data-testid="stSidebar"] {
-    background-color: #161B22;
-    border-right: 1px solid #21262D;
+    background: linear-gradient(180deg, #15171c 0%, #101116 100%);
+    border-right: 1px solid var(--border-soft);
+    box-shadow: 18px 0 55px rgba(0,0,0,0.22);
   }
-  [data-testid="stSidebar"] .stSelectbox label,
-  [data-testid="stSidebar"] .stRadio label,
-  [data-testid="stSidebar"] p { color: #8B949E; font-size: 0.85rem; }
-
-  /* Metric cards */
-  [data-testid="stMetric"] {
-    background: #161B22;
-    border: 1px solid #21262D;
+  [data-testid="stSidebar"] > div:first-child {
+    padding: 1.4rem 1rem 2rem;
+  }
+  [data-testid="stSidebar"] h2 {
+    border: 0;
+    margin: 0 0 0.15rem;
+    padding: 0;
+    color: var(--text);
+    font-size: 1.2rem;
+    letter-spacing: 0;
+  }
+  [data-testid="stSidebar"] p,
+  [data-testid="stSidebar"] label,
+  [data-testid="stSidebar"] .stCaption {
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+  [data-testid="stSidebar"] [role="radiogroup"] {
+    gap: 0.4rem;
+  }
+  [data-testid="stSidebar"] [role="radiogroup"] label {
+    background: transparent;
+    border: 1px solid transparent;
     border-radius: 8px;
-    padding: 16px 20px;
+    padding: 0.55rem 0.65rem;
+    transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
   }
-  [data-testid="stMetric"] label { color: #8B949E; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
-  [data-testid="stMetricValue"]  { color: #E6EDF3; font-family: 'IBM Plex Mono', monospace; font-size: 1.9rem; }
-  [data-testid="stMetricDelta"]  { font-size: 0.8rem; }
+  [data-testid="stSidebar"] [role="radiogroup"] label:hover {
+    background: rgba(255,255,255,0.045);
+    border-color: var(--border-soft);
+  }
+  [data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) {
+    background: var(--accent-soft);
+    border-color: rgba(20,184,166,0.35);
+    color: var(--text);
+  }
+  [data-testid="stSidebar"] [role="radiogroup"] label > div:first-child {
+    display: none;
+  }
+  [data-testid="stSidebar"] [role="radiogroup"] label [data-testid="stMarkdownContainer"] p {
+    color: inherit;
+    font-weight: 650;
+    line-height: 1.2;
+  }
+  [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] strong {
+    color: var(--text);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
 
-  /* Section headers */
-  h1 { font-family: 'IBM Plex Mono', monospace; font-size: 1.6rem; font-weight: 600; color: #E6EDF3; letter-spacing: -0.02em; }
-  h2 { font-family: 'IBM Plex Mono', monospace; font-size: 1.15rem; font-weight: 500; color: #8B949E; border-bottom: 1px solid #21262D; padding-bottom: 6px; margin-top: 28px; }
-  h3 { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.95rem; font-weight: 500; color: #C9D1D9; }
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    letter-spacing: 0;
+  }
+  h1 {
+    color: var(--text);
+    font-size: clamp(1.85rem, 2vw, 2.35rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0 0 0.45rem;
+  }
+  h2 {
+    color: var(--text);
+    border-bottom: 1px solid var(--border-soft);
+    font-size: 1.02rem;
+    font-weight: 700;
+    margin: 1.65rem 0 0.75rem;
+    padding-bottom: 0.55rem;
+  }
+  h3 {
+    color: var(--text);
+    font-size: 0.96rem;
+    font-weight: 700;
+    margin-top: 1.15rem;
+  }
+  p, li, label, .stMarkdown, .stCaption {
+    color: var(--muted);
+  }
+  .stCaption {
+    font-size: 0.82rem;
+  }
+
+  /* Cards and chart frames */
+  [data-testid="stMetric"],
+  [data-testid="stPlotlyChart"],
+  [data-testid="stDataFrame"],
+  [data-testid="stJson"] {
+    background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.018));
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.16);
+  }
+  [data-testid="stPlotlyChart"] {
+    padding: 0.75rem 0.8rem 0.55rem;
+  }
+  [data-testid="stMetric"] {
+    min-height: 118px;
+    padding: 1rem 1rem 0.9rem;
+  }
+  [data-testid="stMetric"] label {
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+  [data-testid="stMetricValue"] {
+    color: var(--text);
+    font-size: clamp(1.45rem, 2.2vw, 2rem);
+    font-weight: 800;
+    line-height: 1.1;
+    padding-top: 0.35rem;
+  }
+  [data-testid="stMetricDelta"] {
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
 
   /* Buttons */
   .stButton > button {
-    background: #21262D;
-    color: #E6EDF3;
-    border: 1px solid #30363D;
-    border-radius: 6px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.82rem;
-    padding: 6px 16px;
-    transition: all 0.15s;
+    min-height: 2.55rem;
+    background: linear-gradient(180deg, #242833 0%, #1d2027 100%);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.16);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.86rem;
+    font-weight: 700;
+    padding: 0.62rem 1rem;
+    transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease, border-color 140ms ease;
   }
   .stButton > button:hover {
-    background: #00C9A7;
-    color: #0D1117;
-    border-color: #00C9A7;
+    background: linear-gradient(180deg, #14b8a6 0%, #0f9f92 100%);
+    border-color: rgba(20,184,166,0.65);
+    color: #061110;
+    box-shadow: 0 14px 28px rgba(20,184,166,0.18);
+    transform: translateY(-1px);
+  }
+  .stButton > button:active {
+    transform: translateY(0);
+  }
+  .stButton > button:focus:not(:active) {
+    border-color: rgba(20,184,166,0.8);
+    box-shadow: 0 0 0 3px rgba(20,184,166,0.16);
   }
 
-  /* Warning / info banners */
-  .stAlert { border-radius: 6px; }
+  /* Inputs */
+  [data-baseweb="input"],
+  [data-baseweb="select"] > div,
+  [data-baseweb="base-input"],
+  [data-baseweb="datepicker"] input {
+    background: var(--surface) !important;
+    border-color: var(--border) !important;
+    border-radius: 8px !important;
+    color: var(--text) !important;
+    min-height: 2.55rem;
+  }
+  input,
+  textarea,
+  [data-baseweb="select"] span {
+    color: var(--text) !important;
+    font-family: 'Inter', sans-serif !important;
+  }
+  input::placeholder {
+    color: var(--muted-2) !important;
+  }
+  [data-baseweb="slider"] div {
+    color: var(--muted);
+  }
+  [data-baseweb="slider"] [role="slider"] {
+    background-color: var(--accent) !important;
+    box-shadow: 0 0 0 4px rgba(20,184,166,0.16);
+  }
 
-  /* Expanders */
-  .streamlit-expanderHeader { background: #161B22; border: 1px solid #21262D; border-radius: 6px; }
+  /* Alerts and expanders */
+  .stAlert {
+    border-radius: var(--radius);
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+  }
+  [data-testid="stExpander"] {
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .streamlit-expanderHeader {
+    background: var(--surface) !important;
+    border: 0 !important;
+    color: var(--text) !important;
+    font-weight: 700;
+  }
 
   /* Tabs */
-  .stTabs [data-baseweb="tab-list"] { background: #161B22; border-radius: 8px; padding: 4px; gap: 4px; }
-  .stTabs [data-baseweb="tab"] { background: transparent; border-radius: 6px; color: #8B949E; font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; }
-  .stTabs [aria-selected="true"] { background: #21262D !important; color: #E6EDF3 !important; }
+  .stTabs [data-baseweb="tab-list"] {
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius);
+    padding: 0.25rem;
+    gap: 0.25rem;
+  }
+  .stTabs [data-baseweb="tab"] {
+    background: transparent;
+    border-radius: 8px;
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.86rem;
+    font-weight: 700;
+  }
+  .stTabs [aria-selected="true"] {
+    background: var(--surface-3) !important;
+    color: var(--text) !important;
+  }
 
   /* Focus score badge */
   .focus-badge {
     display: inline-block;
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.85rem;
-    font-weight: 600;
+    padding: 0.42rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
-  .badge-excellent { background: rgba(0,201,167,0.15); color: #00C9A7; border: 1px solid #00C9A7; }
-  .badge-good      { background: rgba(255,217,61,0.15); color: #FFD93D; border: 1px solid #FFD93D; }
-  .badge-average   { background: rgba(255,107,107,0.12); color: #FF6B6B; border: 1px solid #FF6B6B; }
-  .badge-poor      { background: rgba(139,148,158,0.15); color: #8B949E; border: 1px solid #8B949E; }
+  .badge-excellent { background: rgba(20,184,166,0.14); color: #5eead4; border: 1px solid rgba(20,184,166,0.42); }
+  .badge-good      { background: rgba(251,191,36,0.12); color: #fcd34d; border: 1px solid rgba(251,191,36,0.38); }
+  .badge-average   { background: rgba(248,113,113,0.12); color: #fca5a5; border: 1px solid rgba(248,113,113,0.38); }
+  .badge-poor      { background: rgba(154,163,178,0.12); color: var(--muted); border: 1px solid rgba(154,163,178,0.34); }
 
   /* AI report text */
   .ai-report {
-    background: #161B22;
-    border: 1px solid #21262D;
-    border-left: 3px solid #00C9A7;
-    border-radius: 8px;
-    padding: 20px 24px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    border: 1px solid var(--border-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.25rem 1.4rem;
     font-size: 0.95rem;
     line-height: 1.75;
-    color: #C9D1D9;
+    color: #d7dce5;
     white-space: pre-wrap;
   }
 
   /* Distraction warning */
   .dist-warning {
-    background: rgba(255,107,107,0.08);
-    border: 1px solid rgba(255,107,107,0.3);
-    border-radius: 8px;
-    padding: 12px 18px;
-    color: #FF6B6B;
+    background: var(--danger-soft);
+    border: 1px solid rgba(248,113,113,0.28);
+    border-radius: var(--radius);
+    padding: 0.9rem 1rem;
+    color: #fca5a5;
     font-size: 0.88rem;
-    margin: 8px 0;
+    margin: 0.6rem 0 1rem;
   }
 
   /* Spiral cards */
   .spiral-card {
-    background: #161B22;
-    border: 1px solid #21262D;
-    border-left: 3px solid #FF6B6B;
-    border-radius: 6px;
-    padding: 12px 16px;
-    margin: 6px 0;
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-left: 3px solid var(--danger);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.13);
+    padding: 0.85rem 1rem;
+    margin: 0.5rem 0;
     font-size: 0.83rem;
+    color: #d7dce5;
   }
 
   /* Dataframes */
-  [data-testid="stDataFrame"] { border: 1px solid #21262D; border-radius: 6px; }
+  [data-testid="stDataFrame"] {
+    overflow: hidden;
+  }
+  [data-testid="stDataFrame"] div {
+    font-family: 'Inter', sans-serif;
+  }
+
+  @media (max-width: 900px) {
+    .main .block-container {
+      padding: 1.2rem 1rem 3rem;
+    }
+    [data-testid="stMetric"] {
+      min-height: 104px;
+    }
+  }
 </style>
 """, unsafe_allow_html=True)
 
@@ -250,7 +488,7 @@ def _safe_val(df, col, default=0):
 def render_sidebar():
     with st.sidebar:
         st.markdown("## 🔬 FocusLens")
-        st.markdown('<p style="color:#8B949E;font-size:0.78rem;margin-top:-10px;">Personal Productivity Analytics</p>', unsafe_allow_html=True)
+        st.markdown('<p style="color:#9aa3b2;font-size:0.78rem;margin-top:-10px;">Personal Productivity Analytics</p>', unsafe_allow_html=True)
         st.markdown("---")
 
         page = st.radio(
@@ -394,10 +632,11 @@ def page_focus_patterns(daily_df, hourly_df, raw_df, lookback):
         day_label  = day_map[int(best_dow_row)]
 
         st.markdown(
-            f'<div style="background:#161B22;border:1px solid #21262D;border-left:3px solid #00C9A7;'
-            f'border-radius:8px;padding:14px 20px;margin-bottom:16px;">'
-            f'<span style="color:#8B949E;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;">Peak Focus Window</span><br>'
-            f'<span style="font-family:IBM Plex Mono,monospace;font-size:1.1rem;color:#00C9A7;font-weight:600;">'
+            f'<div style="background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));'
+            f'border:1px solid rgba(255,255,255,0.07);border-left:3px solid #14b8a6;'
+            f'border-radius:10px;padding:16px 20px;margin-bottom:18px;box-shadow:0 12px 32px rgba(0,0,0,0.16);">'
+            f'<span style="color:#9aa3b2;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">Peak Focus Window</span><br>'
+            f'<span style="font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;font-size:1.12rem;color:#5eead4;font-weight:800;">'
             f'{day_label} · {hour_label}</span></div>',
             unsafe_allow_html=True,
         )
@@ -409,7 +648,7 @@ def page_focus_patterns(daily_df, hourly_df, raw_df, lookback):
         import plotly.graph_objects as go
         fig = go.Figure()
         fig.add_bar(x=hour_agg["hour"], y=hour_agg["productive_ratio"],
-                    name="Productive", marker_color="#00C9A7",
+                    name="Productive", marker_color="#14b8a6",
                     hovertemplate="Hour %{x}:00<br>%{y:.1%}<extra></extra>")
         fig.add_bar(x=hour_agg["hour"], y=hour_agg["distraction_ratio"],
                     name="Distraction", marker_color="#FF6B6B",
@@ -418,9 +657,9 @@ def page_focus_patterns(daily_df, hourly_df, raw_df, lookback):
             barmode="group",
             xaxis=dict(title="Hour of Day", tickmode="linear", dtick=2),
             yaxis=dict(title="Ratio", tickformat=".0%"),
-            paper_bgcolor="#0D1117", plot_bgcolor="#0D1117",
-            font=dict(color="#E6EDF3"),
-            legend=dict(bgcolor="#161B22", bordercolor="#30363D", borderwidth=1),
+            paper_bgcolor="#0f1014", plot_bgcolor="#0f1014",
+            font=dict(family="Inter, sans-serif", color="#f4f6f8"),
+            legend=dict(bgcolor="#16181d", bordercolor="#2b303b", borderwidth=1),
             margin=dict(l=10, r=10, t=30, b=10),
         )
         st.plotly_chart(fig, use_container_width=True)
@@ -573,7 +812,7 @@ def main():
     if db_is_empty and page != "✨ AI Report":
         st.markdown("# 🔬 FocusLens")
         st.markdown(
-            '<p style="color:#8B949E;font-size:1rem;">Your personal productivity analytics dashboard.</p>',
+            '<p style="color:#9aa3b2;font-size:1rem;">Your personal productivity analytics dashboard.</p>',
             unsafe_allow_html=True,
         )
         st.info(

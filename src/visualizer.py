@@ -29,13 +29,13 @@ logger = logging.getLogger(__name__)
 # ─── Shared Theme ─────────────────────────────────────────────────────────────
 
 DARK_THEME = dict(
-    paper_bgcolor="#0D1117",
-    plot_bgcolor="#0D1117",
-    font=dict(family="'IBM Plex Mono', monospace", color="#E6EDF3", size=12),
-    title_font=dict(family="'IBM Plex Mono', monospace", color="#E6EDF3", size=14),
-    xaxis=dict(gridcolor="#21262D", linecolor="#30363D", zerolinecolor="#30363D"),
-    yaxis=dict(gridcolor="#21262D", linecolor="#30363D", zerolinecolor="#30363D"),
-    legend=dict(bgcolor="#161B22", bordercolor="#30363D", borderwidth=1),
+    paper_bgcolor="#0f1014",
+    plot_bgcolor="#0f1014",
+    font=dict(family="Inter, sans-serif", color="#f4f6f8", size=12),
+    title_font=dict(family="Inter, sans-serif", color="#f4f6f8", size=14),
+    xaxis=dict(gridcolor="#242833", linecolor="#2b303b", zerolinecolor="#2b303b"),
+    yaxis=dict(gridcolor="#242833", linecolor="#2b303b", zerolinecolor="#2b303b"),
+    legend=dict(bgcolor="#16181d", bordercolor="#2b303b", borderwidth=1),
 )
 
 CAT_COLORS = config.CATEGORY_COLORS
@@ -76,9 +76,9 @@ def chart_today_pie(daily_df: pd.DataFrame) -> go.Figure:
         labels=labels,
         values=values,
         hole=0.65,
-        marker=dict(colors=colors, line=dict(color="#0D1117", width=3)),
+        marker=dict(colors=colors, line=dict(color="#0f1014", width=3)),
         textinfo="percent",
-        textfont=dict(size=13, color="#E6EDF3"),
+        textfont=dict(size=13, color="#f4f6f8"),
         hovertemplate="<b>%{label}</b><br>%{value:.0f} min<extra></extra>",
     ))
     
@@ -87,7 +87,7 @@ def chart_today_pie(daily_df: pd.DataFrame) -> go.Figure:
     fig.add_annotation(
         text=f"<b>{focus:.0f}</b><br><span style='font-size:10px'>Focus Score</span>",
         x=0.5, y=0.5, showarrow=False,
-        font=dict(size=20, color="#E6EDF3"),
+        font=dict(size=20, color="#f4f6f8"),
     )
     
     return _apply_theme(fig, "Today's Activity Split")
@@ -166,7 +166,7 @@ def chart_top_distraction_domains(raw_df: pd.DataFrame, top_n: int = 10) -> go.F
         hovertemplate="<b>%{y}</b><br>%{x:.1f} minutes<extra></extra>",
         text=[f"{v:.0f} min" for v in domain_time_min.values[::-1]],
         textposition="outside",
-        textfont=dict(color="#E6EDF3", size=11),
+        textfont=dict(color="#f4f6f8", size=11),
     ))
     
     fig.update_layout(
@@ -285,7 +285,7 @@ def chart_pca_scatter(cluster_df: pd.DataFrame) -> go.Figure:
                 color=color,
                 size=6,
                 opacity=0.75,
-                line=dict(color="#0D1117", width=0.5),
+                line=dict(color="#0f1014", width=0.5),
             ),
             hovertemplate=(
                 f"<b>{name}</b><br>"
@@ -308,7 +308,7 @@ def chart_pca_scatter(cluster_df: pd.DataFrame) -> go.Figure:
                     color=CLUSTER_COLORS.get(-1, "#9B59B6"),
                     size=10,
                     symbol="diamond",
-                    line=dict(color="#E6EDF3", width=1.5),
+                    line=dict(color="#f4f6f8", width=1.5),
                 ),
             ))
     
@@ -357,7 +357,7 @@ def chart_elbow_curve(elbow_df: pd.DataFrame) -> go.Figure:
     )
     
     fig.update_yaxes(title_text="Inertia", secondary_y=False,
-                     gridcolor="#21262D", color="#E6EDF3")
+                     gridcolor="#242833", color="#f4f6f8")
     fig.update_yaxes(title_text="Silhouette Score", secondary_y=True,
                      color="#FFD93D")
     fig.update_xaxes(title_text="Number of Clusters (k)", tickmode="linear")
@@ -380,7 +380,7 @@ def chart_cluster_distribution(cluster_df: pd.DataFrame) -> go.Figure:
     fig = go.Figure(go.Pie(
         labels=counts["kmeans_name"],
         values=counts["count"],
-        marker=dict(colors=colors, line=dict(color="#0D1117", width=2)),
+        marker=dict(colors=colors, line=dict(color="#0f1014", width=2)),
         textinfo="percent+label",
         hovertemplate="<b>%{label}</b><br>%{value} hours (%{percent})<extra></extra>",
     ))
@@ -491,10 +491,10 @@ def chart_week_comparison(daily_df: pd.DataFrame) -> go.Figure:
         name="Last Week",
         x=labels,
         y=last_vals,
-        marker_color="#30363D",
+        marker_color="#2b303b",
         text=[f"{v:.1f}" for v in last_vals],
         textposition="outside",
-        textfont=dict(color="#8B949E"),
+        textfont=dict(color="#9aa3b2"),
     ))
     
     fig.add_trace(go.Bar(
@@ -504,7 +504,7 @@ def chart_week_comparison(daily_df: pd.DataFrame) -> go.Figure:
         marker_color=CAT_COLORS["productive"],
         text=[f"{v:.1f}" for v in this_vals],
         textposition="outside",
-        textfont=dict(color="#E6EDF3"),
+        textfont=dict(color="#f4f6f8"),
     ))
     
     fig.update_layout(
@@ -526,7 +526,7 @@ def _empty_chart(message: str) -> go.Figure:
         x=0.5, y=0.5,
         xref="paper", yref="paper",
         showarrow=False,
-        font=dict(size=14, color="#8B949E"),
+        font=dict(size=14, color="#9aa3b2"),
     )
     fig.update_layout(
         **DARK_THEME,
